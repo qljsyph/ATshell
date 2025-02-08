@@ -100,7 +100,7 @@ sudo chmod -R 755 "$SCRIPTS_DIR" || { log_message "设置脚本目录权限失�
 
 # 下载主脚本 menu.sh
 log_message "下载主脚本 menu.sh ..."
-wget -O "$SCRIPTS_DIR/menu.sh" "https://raw.githubusercontent.com/qljsyph/ATshell/refs/heads/main/ATscripts/menu.sh" || { log_message "下载 menu.sh 失败！"; exit 1; }
+wget -O "$SCRIPTS_DIR/menu.sh" "https://ghfast.top/https://raw.githubusercontent.com/qljsyph/ATshell/refs/heads/main/ATscripts/menu.sh" || { log_message "下载 menu.sh 失败！"; exit 1; }
 
 # 创建快捷脚本 /usr/local/bin/AT
 log_message "创建快捷脚本 /usr/local/bin/AT ..."

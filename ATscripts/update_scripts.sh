@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 设置基础路径和脚本存放目录
-BASE_URL="https://raw.githubusercontent.com/qljsyph/ATshell/refs/heads/main/ATscripts"
+BASE_URL="https://ghfast.top/https://raw.githubusercontent.com/qljsyph/ATshell/refs/heads/main/ATscripts"
 SCRIPTS_DIR="/etc/mihomo/scripts"
 LOG_FILE="/var/log/mihomo_update.log"
 TEMP_DIR="/tmp/mihomo_update_temp"

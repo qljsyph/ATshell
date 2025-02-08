@@ -20,7 +20,7 @@ function check_scripts() {
     if [ ${#missing_scripts[@]} -gt 0 ]; then
         echo "下载缺失的脚本..."
         for missing_script in "${missing_scripts[@]}"; do
-            if ! curl -O "https://raw.githubusercontent.com/qljsyph/ATshell/main/ATscripts/$missing_script"; then
+            if ! curl -O "https://ghfast.top/https://raw.githubusercontent.com/qljsyph/ATshell/main/ATscripts/$missing_script"; then
                 # 输出 curl 命令的具体错误信息
                 echo "下载 $missing_script 失败，错误信息: $?"
                 echo "请检查网络连接或 URL 是否正确。"
