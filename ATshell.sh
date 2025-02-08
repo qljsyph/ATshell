@@ -9,7 +9,7 @@ function log_message() {
 }
 
 # 清空旧的日志文件
-> "$LOG_FILE"
+true > "$LOG_FILE"
 
 log_message "===== 开始安装脚本 ====="
 
@@ -72,6 +72,20 @@ if ! command -v curl &> /dev/null; then
 else
     log_message "已安装 curl"
 fi
+# 检查并安装 jq
+if ! command -v jq &> /dev/null; then
+    log_message "未检测到 jq，正在安装..."
+    if [ -x "$(command -v apt-get)" ]; then
+        sudo apt-get install -y jq || { log_message "安装 jq 失败！"; exit 1; }
+    elif [ -x "$(command -v yum)" ]; then
+        sudo yum install -y jq || { log_message "安装 jq 失败！"; exit 1; }
+    else
+        log_message "无法通过 apt-get 或 yum 安装 jq，请手动安装！"
+        exit 1
+    fi
+else
+    log_message "已安装 jq"
+fi
 
 # 确保脚本目录存在
 SCRIPTS_DIR="/etc/mihomo/scripts"
@@ -86,7 +100,7 @@ sudo chmod -R 755 "$SCRIPTS_DIR" || { log_message "设置脚本目录权限失�
 
 # 下载主脚本 menu.sh
 log_message "下载主脚本 menu.sh ..."
-wget -O "$SCRIPTS_DIR/menu.sh" "https://github.com/yourusername/yourproject/raw/main/menu.sh" || { log_message "下载 menu.sh 失败！"; exit 1; }
+wget -O "$SCRIPTS_DIR/menu.sh" "https://raw.githubusercontent.com/qljsyph/ATshell/refs/heads/main/ATscripts/menu.sh" || { log_message "下载 menu.sh 失败！"; exit 1; }
 
 # 创建快捷脚本 /usr/local/bin/AT
 log_message "创建快捷脚本 /usr/local/bin/AT ..."

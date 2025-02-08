@@ -2,18 +2,15 @@
 
 LOG_FILE="/var/log/mihomo_install.log"
 
-# 清空旧的日志文件
 true > "$LOG_FILE"
 
-# 用于输出到终端和日志文件的函数
 function log_message() {
     echo "$1" | tee -a "$LOG_FILE"
 }
 
-# 输出日志信息
-log_message "===== 开始安装 Mihomo ====="
+log_message "===== 开始安装 ====="
 
-# 检查 /usr/local/bin/mihomo 是否存在
+
 if [ -f "/usr/local/bin/mihomo" ]; then
     log_message "/usr/local/bin/mihomo 已存在，是否删除？（y/n）"
     read -r choice
@@ -27,10 +24,9 @@ if [ -f "/usr/local/bin/mihomo" ]; then
     fi
 fi
 
-# 获取GitHub上的版本信息
 function get_github_versions() {
     local url=$1
-    curl -s $url | jq -r '.assets[] | select(.name | test(".gz$")) | .name' 
+    curl -s "$url" | jq -r '.assets[] | select(.name | test(".gz$")) | .name' 
 }
 
 # 解压并安装到 /usr/local/bin
@@ -150,7 +146,7 @@ function show_menu() {
 # 主控制逻辑
 while true; do
     show_menu
-    read -p "请输入选项: " choice
+    read -r -p "请输入选项: " choice
     case $choice in
         1) install_alpha ;;
         2) install_stable ;;
