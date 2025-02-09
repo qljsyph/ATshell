@@ -25,14 +25,11 @@ function check_and_download_scripts() {
         if [ ! -f "$SCRIPTS_DIR/$file" ]; then
             echo "依赖 $key 不存在，正在下载..."
             wget -O "$SCRIPTS_DIR/$file" "$BASE_URL/$file" > /dev/null 2>&1 || { echo "下载 $file 失败！"; exit 1; }
-        else
-            echo "依赖 $key 已存在，无需下载。"
         fi
     done
 }
 
-    
-    echo "设置脚本文件权限为 755 ..."
+echo "设置脚本文件权限为 755 ..."
 sudo chmod -R 755 "$SCRIPTS_DIR"/* || { echo "设置脚本权限失败！"; exit 1; }
 
 
