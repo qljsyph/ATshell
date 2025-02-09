@@ -17,7 +17,7 @@ function check_and_download_scripts() {
     for file in "${files[@]}"; do
         if [ ! -f "$SCRIPTS_DIR/$file" ]; then
             echo "$file 文件不存在，正在下载..."
-            wget -O "$SCRIPTS_DIR/$file" "$BASE_URL/$file" || { echo "下载 $file 失败！"; exit 1; }
+            wget -O "$SCRIPTS_DIR/$file" "$BASE_URL/$file" > /dev/null 2>&1 || { echo "下载 $file 失败！"; exit 1; }
         else
             echo "$file 文件已存在，无需下载。"
         fi
@@ -39,7 +39,7 @@ function show_menu() {
     echo "1. 安装"
     echo "2. 删除"
     echo "3. 运行"
-    echo "4. 查看安装错误日志"
+    echo "4. 查看安装日志"
     echo "5. 更新脚本"
     echo "6. 退出"
     echo "请选择操作:"
