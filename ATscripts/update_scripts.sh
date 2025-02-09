@@ -20,7 +20,7 @@ function curl_with_retry() {
     local retries=0
     while [ $retries -lt $MAX_RETRIES ]; do
         result=$(curl -s "$url")
-        if [ $? -eq 0 ]; then
+        if [ $? -eq 0 ] && [ -n "$result" ]; then
             echo "$result"
             return 0
         fi
@@ -62,17 +62,18 @@ fi
 
 # 获取当前本地脚本版本（从 menu.sh 中提取版本号）
 if [ -f "$SCRIPTS_DIR/menu.sh" ]; then
-    local_current_version=$(grep -oP '版本:\K[\d.]+(?=$)' "$SCRIPTS_DIR/menu.sh")
+    local_current_version=$(grep -oP '(?<=版本:)[0-9.]+' "$SCRIPTS_DIR/menu.sh" | head -n1)
     log_message "当前本地版本：$local_current_version"
 else
     log_message "未找到本地 menu.sh，假设当前版本为 0.0.0"
     local_current_version="0.0.0"
 fi
 
-# 获取远程版本信息（从远程 menu.sh 脚本中提取）
+# 获取远程版本信息
 log_message "获取远程版本信息..."
-remote_version=$(curl_with_retry "$BASE_URL/menu.sh" | grep -oP '版本:\K[\d.]+(?=$)')
-if [ $? -ne 0 ]; then
+remote_version=$(curl_with_retry "$BASE_URL/menu.sh" | grep -oP '(?<=版本:)[0-9.]+' | head -n1)
+
+if [ -z "$remote_version" ]; then
     log_message "获取远程版本信息失败，退出脚本。"
     exit 1
 fi

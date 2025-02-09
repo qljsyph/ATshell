@@ -1,5 +1,5 @@
 #!/bin/bash
-#v1.0.1
+#v1.0.2
 
 # 日志文件
 LOG_FILE="/var/log/mihomo_install.log"
