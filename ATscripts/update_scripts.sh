@@ -158,8 +158,13 @@ fi
 log_message "===== 脚本更新完成 ====="
 
 # 提示用户完成更新
-echo "脚本更新完成！请检查日志文件：$LOG_FILE"
+echo "脚本更新完成！"
 
-# 重新加载最新的 menu.sh
 log_message "重新加载最新的 menu.sh..."
- bash "$SCRIPTS_DIR/menu.sh" > /dev/null 2>&1
+if [ -f "$SCRIPTS_DIR/menu.sh" ] && [ -x "$SCRIPTS_DIR/menu.sh" ]; then
+    bash "$SCRIPTS_DIR/menu.sh"
+else
+    log_message "menu.sh 文件不存在或不可执行！"
+    echo "menu.sh 文件不存在或不可执行！"
+    exit 1
+fi
