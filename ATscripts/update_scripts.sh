@@ -139,4 +139,4 @@ log_message "===== 脚本更新完成 ====="
 echo "脚本更新完成！请检查日志文件：$LOG_FILE"
 
 log_message "重新加载最新的 menu.sh..."
-exec "$SCRIPTS_DIR/menu.sh"
+source "$SCRIPTS_DIR/menu.sh"
