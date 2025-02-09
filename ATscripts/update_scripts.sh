@@ -88,14 +88,13 @@ if [ "$local_current_version" != "$remote_version" ]; then
 
     if [ "$update_choice" != "y" ]; then
         log_message "用户选择不更新，返回主菜单。"
-        "$SCRIPTS_DIR/menu.sh" > /dev/null 2>&1
-        exit 0
+        echo "用户选择不更新，返回主菜单。"
+        exec bash "$SCRIPTS_DIR/menu.sh"
     fi
 else
     log_message "当前已是最新版本，无需更新。"
     echo "当前已是最新版本，无需更新。"
-    "$SCRIPTS_DIR/menu.sh" > /dev/null 2>&1
-    exit 0
+    exec bash "$SCRIPTS_DIR/menu.sh"
 fi
 
 # 删除旧版本脚本
