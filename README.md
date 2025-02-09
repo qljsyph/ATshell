@@ -1,6 +1,6 @@
 # ATAsst
 致谢MetaCubeX https://github.com/MetaCubeX
-本项目是一个辅助虚空终端mihomo使用的工具，让使用更加便利。使用者请遵循当地的法律法规使用
+本项目是一个辅助虚空终端mihomo使用的工具，让使用更加便利。
 ## 支持环境：
 
 目前支持系统为linux
