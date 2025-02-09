@@ -11,6 +11,11 @@ bash <(curl -sL https://ghfast.top/https://raw.githubusercontent.com/qljsyph/ATA
 ```
 （初始化运行结束，输入“**AT**”进入菜单）  
 
+## 系统信息显示一键脚本：
+```
+bash <(curl -sL https://ghfast.top/https://raw.githubusercontent.com/qljsyph/DPInfo-script/refs/heads/main/auto-sysinfo.sh)
+```
+
 ## 使用问题：
 
 **请查看[wiki](https://github.com/qljsyph/ATAsst/wiki)**
