@@ -44,11 +44,6 @@ disable_service() {
     read -p "按回车键返回菜单..."
 }
 
-go_back() {
-    echo "返回上层..."
-    read -p "按回车键返回上层菜单..."
-}
-
 while true; do
     show_menu
     read -p "请输入选择 (1-6): " choice
@@ -58,7 +53,7 @@ while true; do
         3) view_logs ;;
         4) enable_service ;;
         5) disable_service ;;
-        6) go_back ;;  # 选择返回上层
+        6) break ;;  # 选择返回上层，退出循环
         *) echo "无效选择，请重新输入。" ;;
     esac
 done
