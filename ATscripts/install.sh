@@ -1,8 +1,16 @@
 #!/bin/bash
 
+# 检查是否以 root 权限运行
+if [ "$EUID" -ne 0 ]; then
+    echo "请使用 sudo 运行此脚本。"
+    exit 1
+fi
+
 LOG_FILE="/var/log/mihomo_install.log"
 
+# 清空日志文件并确保有写入权限
 true > "$LOG_FILE"
+chmod 666 "$LOG_FILE"
 
 function log_message() {
     echo "$1" | tee -a "$LOG_FILE"
@@ -10,45 +18,76 @@ function log_message() {
 
 log_message "===== 开始安装 ====="
 
-
+# 检查是否已安装 mihomo，如果已安装，提示用户是否删除
 if [ -f "/usr/local/bin/mihomo" ]; then
     log_message "/usr/local/bin/mihomo 已存在，是否删除？（y/n）"
     read -r choice
     if [ "$choice" == "y" ]; then
         log_message "正在删除现有的 /usr/local/bin/mihomo ..."
-        sudo rm -f /usr/local/bin/mihomo || { log_message "删除失败！"; exit 1; }
-        log_message "现有文件已删除"
+        if ! rm -f /usr/local/bin/mihomo; then
+            log_message "删除失败！"
+            exit 1
+        fi
+        log_message "现有文件已成功删除"
     else
         log_message "用户选择不删除文件，退出安装"
         exit 0
     fi
 fi
 
+# 获取 GitHub Releases 的版本信息
+# 兼容返回单个对象（稳定版）和数组（例如 Alpha 版）的情况
 function get_github_versions() {
     local url=$1
-    curl -s "$url" | jq -r '.assets[] | select(.name | test(".gz$")) | .name' 
+    log_message "尝试获取 $url 的版本信息..."
+    if ! response=$(curl -s "$url"); then
+        log_message "获取 GitHub 版本信息时网络请求失败，请检查网络连接。"
+        return 1
+    fi
+    log_message "成功获取 $url 的版本信息"
+    echo "$response" | jq -r 'if type=="array" then
+         .[] | .tag_name as $tag | .assets[] | select(.name | test("^mihomo-linux.*\\.gz$")) | [.name, $tag] | @tsv
+       else
+         .tag_name as $tag | .assets[] | select(.name | test("^mihomo-linux.*\\.gz$")) | [.name, $tag] | @tsv
+       end'
 }
 
 # 解压并安装到 /usr/local/bin
 function install_to_bin() {
     local file_name=$1
+    local temp_dir=$2
 
-    # 解压文件到临时目录
-    echo "正在解压 $file_name..."
-    tar -xzf "$file_name" -C /tmp
+    if [ ! -f "$temp_dir/$file_name" ]; then
+        log_message "文件 $temp_dir/$file_name 不存在或下载失败，请检查网络连接或 GitHub 链接是否有效。"
+        return 1
+    fi
 
-    # 假设解压后文件是一个单一文件，我们把它重命名为 mihomo 并移动到 /usr/local/bin
-    extracted_file=$(tar -tf "$file_name" | head -n 1)
-    
-    if [ -f "/tmp/$extracted_file" ]; then
-        echo "正在将文件移动到 /usr/local/bin 并重命名为 mihomo..."
-        sudo mv "/tmp/$extracted_file" /usr/local/bin/mihomo
-        sudo chmod 755 /usr/local/bin/mihomo
-        echo "安装完成，mihomo 已安装到 /usr/local/bin 并设置了 755 权限"
+    log_message "正在解压 $file_name..."
+    if ! gunzip "$temp_dir/$file_name"; then
+        log_message "解压文件 $file_name 失败，请检查文件是否损坏。"
+        return 1
+    fi
+    log_message "文件 $file_name 解压成功"
 
-        # 创建 systemd 服务文件
-        echo "正在创建 /etc/systemd/system/mihomo.service 文件..."
-        sudo bash -c 'cat <<EOF > /etc/systemd/system/mihomo.service
+    # 假设解压后只有一个文件，将其重命名为 mihomo 并移动到 /usr/local/bin
+    extracted_file="${file_name%.gz}"
+
+    if [ -f "$temp_dir/$extracted_file" ]; then
+        log_message "正在将文件移动到 /usr/local/bin 并重命名为 mihomo..."
+        if ! mv "$temp_dir/$extracted_file" /usr/local/bin/mihomo; then
+            log_message "移动文件到 /usr/local/bin 失败，请检查权限。"
+            return 1
+        fi
+        log_message "文件已成功移动到 /usr/local/bin 并重命名为 mihomo"
+
+        if ! chmod 755 /usr/local/bin/mihomo; then
+            log_message "设置文件权限失败，请检查权限。"
+            return 1
+        fi
+        log_message "已成功为 /usr/local/bin/mihomo 设置 755 权限"
+
+        log_message "正在创建 /etc/systemd/system/mihomo.service 文件..."
+        if ! cat <<EOF > /etc/systemd/system/mihomo.service
 [Unit]
 Description=mihomo Daemon, Another Clash Kernel.
 After=network.target NetworkManager.service systemd-networkd.service iwd.service
@@ -66,69 +105,107 @@ ExecReload=/bin/kill -HUP \$MAINPID
 
 [Install]
 WantedBy=multi-user.target
-EOF'
+EOF
+        then
+            log_message "创建 mihomo.service 文件失败，请检查权限。"
+            return 1
+        fi
 
-        # 重新加载 systemd，启用 mihomo 服务
-        echo "正在重新加载 systemd 服务，启用 mihomo 服务..."
-        sudo systemctl daemon-reload
-        sudo systemctl enable mihomo.service
-        echo "mihomo 服务已设置为开机自启"
+        # 检查文件是否存在
+        if [ ! -f "/etc/systemd/system/mihomo.service" ]; then
+            log_message "创建 mihomo.service 文件失败，请检查权限。"
+            return 1
+        fi
+        log_message "成功创建 /etc/systemd/system/mihomo.service 文件"
+
+        log_message "正在重新加载 systemd 服务，启用 mihomo 服务..."
+        if ! systemctl daemon-reload; then
+            log_message "重新加载 systemd 服务失败，请检查配置。"
+            return 1
+        fi
+        log_message "systemd 服务重新加载成功"
+
+        if ! systemctl enable mihomo.service; then
+            log_message "启用 mihomo 服务失败，请检查配置。"
+            return 1
+        fi
+        log_message "mihomo 服务已成功设置为开机自启"
     else
-        echo "解压后未找到文件，安装失败。"
+        log_message "解压后未找到文件，安装失败。"
         return 1
     fi
 }
 
-# 安装Alpha版本
-function install_alpha() {
-    echo "正在获取Alpha版版本信息..."
-    alpha_versions=$(get_github_versions "https://api.github.com/repos/MetaCubeX/mihomo/releases?per_page=5")
+# 通用安装函数
+function install_version() {
+    local url=$1
+    local version_type=$2
 
-    if [ -z "$alpha_versions" ]; then
-        echo "未找到Alpha版的Linux系统.gz压缩包，返回上层..."
+    log_message "正在获取 $version_type 版版本信息..."
+    versions=$(get_github_versions "$url")
+
+    if [ -z "$versions" ]; then
+        log_message "未找到 $version_type 版的 Linux 系统 .gz 压缩包，返回上层..."
         return
     fi
 
-    echo "请选择要安装的Alpha版本架构："
-    select alpha_version in $alpha_versions; do
-        if [ -n "$alpha_version" ]; then
-            echo "正在下载 Alpha 版本: $alpha_version"
-            curl -L "https://github.com/MetaCubeX/mihomo/releases/download/Prerelease-Alpha/$alpha_version" -o "$alpha_version"
-            echo "$alpha_version 下载完成"
+    log_message "请选择要安装的 $version_type 版本架构："
+    IFS=$'\n'
+    select version in $versions; do
+        if [ -n "$version" ]; then
+            file_name=$(echo "$version" | awk -F $'\t' '{print $1}')
+            tag=$(echo "$version" | awk -F $'\t' '{print $2}')
 
-            # 解压并安装到 /usr/local/bin
-            install_to_bin "$alpha_version"
-            break
+            # 创建临时目录
+            temp_dir=$(mktemp -d)
+            log_message "临时目录创建成功：$temp_dir"
+
+            # 注册退出时清理临时目录
+            trap 'log_message "删除临时目录：$temp_dir"; rm -rf "$temp_dir"' EXIT
+
+            log_message "正在下载 $version_type 版本: $file_name"
+            download_url="https://github.com/MetaCubeX/mihomo/releases/download/$tag/$file_name"
+            log_message "下载地址: $download_url"
+
+            # 执行 curl 命令并捕获返回值和 HTTP 状态码
+            http_code=$(curl -L -s -w "%{http_code}" "$download_url" -o "$temp_dir/$file_name")
+            if [ "$http_code" == "200" ]; then
+                log_message "$file_name 下载完成"
+                if ! install_to_bin "$file_name" "$temp_dir"; then
+                    log_message "安装 $file_name 失败"
+                    return 1
+                fi
+                log_message "安装 $file_name 成功"
+                break
+            else
+                log_message "下载失败，错误码：$http_code，请检查网络连接或 GitHub 链接是否有效。"
+                return 1
+            fi
         else
-            echo "无效选择，请重新选择."
+            log_message "无效选择，请重新选择."
         fi
     done
+    unset IFS
 }
 
-# 安装发行版
-function install_stable() {
-    echo "正在获取发行版版本信息..."
-    stable_versions=$(get_github_versions "https://api.github.com/repos/MetaCubeX/mihomo/releases/latest")
-
-    if [ -z "$stable_versions" ]; then
-        echo "未找到发行版的Linux系统.gz压缩包，返回上层..."
-        return
+# 安装 Alpha 版本
+function install_alpha() {
+    log_message "开始尝试安装 Alpha 版本"
+    if ! install_version "https://api.github.com/repos/MetaCubeX/mihomo/releases?per_page=5" "Alpha"; then
+        log_message "安装 Alpha 版本失败"
+        return 1
     fi
+    log_message "Alpha 版本安装成功"
+}
 
-    echo "请选择要安装的发行版架构："
-    select stable_version in $stable_versions; do
-        if [ -n "$stable_version" ]; then
-            echo "正在下载 发行版: $stable_version"
-            curl -L "https://github.com/MetaCubeX/mihomo/releases/download/$stable_version/$stable_version" -o "$stable_version"
-            echo "$stable_version 下载完成"
-
-            # 解压并安装到 /usr/local/bin
-            install_to_bin "$stable_version"
-            break
-        else
-            echo "无效选择，请重新选择."
-        fi
-    done
+# 安装稳定版
+function install_stable() {
+    log_message "开始尝试安装稳定版本"
+    if ! install_version "https://api.github.com/repos/MetaCubeX/mihomo/releases/latest" "稳定"; then
+        log_message "安装稳定版本失败"
+        return 1
+    fi
+    log_message "稳定版本安装成功"
 }
 
 # 安装主菜单
@@ -137,7 +214,7 @@ function show_menu() {
     echo "==============================="
     echo "       安装脚本菜单           "
     echo "==============================="
-    echo "1) 安装Alpha"
+    echo "1) 安装 Alpha 版"
     echo "2) 安装发行版"
     echo "3) 返回上层"
     echo -n "请输入你的选择 [1-3]: "
@@ -148,9 +225,23 @@ while true; do
     show_menu
     read -r -p "请输入选项: " choice
     case $choice in
-        1) install_alpha ;;
-        2) install_stable ;;
-        3) echo "返回上层..."; break ;;
-        *) echo "无效选项，请重新选择."; sleep 2 ;;
+        1) 
+            if ! install_alpha; then
+                log_message "安装过程中出现问题，请查看日志进行排查"
+            fi
+            ;;
+        2) 
+            if ! install_stable; then
+                log_message "安装过程中出现问题，请查看日志进行排查"
+            fi
+            ;;
+        3) 
+            echo "返回上层..."
+            break
+            ;;
+        *) 
+            echo "无效选项，请重新选择."
+            sleep 2
+            ;;
     esac
 done
