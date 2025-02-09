@@ -11,7 +11,7 @@ MAX_RETRIES=3
 
 # 用于输出日志
 function log_message() {
-    echo "$1" | tee -a "$LOG_FILE"
+    echo "$1" | tee -a "$LOG_FILE" > /dev/null
 }
 
 # 带重试机制的 curl 函数
@@ -38,7 +38,7 @@ function wget_with_retry() {
     local output="$2"
     local retries=0
     while [ $retries -lt $MAX_RETRIES ]; do
-        if wget -O "$output" "$url"; then
+        if wget -O "$output" "$url" > /dev/null 2>&1; then
             return 0
         fi
         log_message "wget 下载 $url 失败，正在进行第 $((retries + 1)) 次重试..."
@@ -82,19 +82,19 @@ log_message "远程版本：$remote_version"
 
 # 对比版本号，如果不同则提示更新
 if [ "$local_current_version" != "$remote_version" ]; then
-    echo "当前版本：$local_current_version"
-    echo "远程版本：$remote_version"
+    log_message "当前版本：$local_current_version"
+    log_message "远程版本：$remote_version"
     read -r -p "发现新版本，是否更新脚本？(y/n): " update_choice
 
     if [ "$update_choice" != "y" ]; then
         log_message "用户选择不更新，返回主菜单。"
-        "$SCRIPTS_DIR/menu.sh"
+        "$SCRIPTS_DIR/menu.sh" > /dev/null 2>&1
         exit 0
     fi
 else
     log_message "当前已是最新版本，无需更新。"
     echo "当前已是最新版本，无需更新。"
-    "$SCRIPTS_DIR/menu.sh"
+    "$SCRIPTS_DIR/menu.sh" > /dev/null 2>&1
     exit 0
 fi
 
@@ -103,7 +103,7 @@ log_message "删除旧版本脚本..."
 for file in "$SCRIPTS_DIR"/*; do
     if [ -f "$file" ]; then
         log_message "正在删除旧文件: $file ..."
-        sudo rm -f "$file"
+        sudo rm -f "$file" > /dev/null 2>&1
         if [ $? -eq 0 ]; then
             log_message "成功删除旧文件: $file"
         else
@@ -141,12 +141,12 @@ done
 
 # 设置脚本权限
 log_message "设置脚本文件权限为 755 ..."
-sudo chmod -R 755 "$SCRIPTS_DIR"/* || { log_message "设置脚本权限失败！"; exit 1; }
+sudo chmod -R 755 "$SCRIPTS_DIR"/* > /dev/null 2>&1 || { log_message "设置脚本权限失败！"; exit 1; }
 
 # 清除临时目录
 if [ -d "$TEMP_DIR" ]; then
     log_message "清除临时目录 $TEMP_DIR ..."
-    sudo rm -rf "$TEMP_DIR"
+    sudo rm -rf "$TEMP_DIR" > /dev/null 2>&1
     if [ $? -eq 0 ]; then
         log_message "成功清除临时目录 $TEMP_DIR"
     else
@@ -162,4 +162,4 @@ echo "脚本更新完成！请检查日志文件：$LOG_FILE"
 
 # 重新加载最新的 menu.sh
 log_message "重新加载最新的 menu.sh..."
-exec bash "$SCRIPTS_DIR/menu.sh"
+ bash "$SCRIPTS_DIR/menu.sh" > /dev/null 2>&1
