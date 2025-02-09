@@ -20,3 +20,6 @@ bash <(curl -sL https://ghfast.top/https://raw.githubusercontent.com/qljsyph/DPI
 
 **请查看[wiki](https://github.com/qljsyph/ATAsst/wiki)**
 
+## 展示
+
+![Image text](https://raw.githubusercontent.com/qljsyph/ATAsst/refs/heads/main/p.jpg)
