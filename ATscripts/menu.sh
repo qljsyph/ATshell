@@ -3,33 +3,42 @@
 BASE_URL="https://ghfast.top/https://raw.githubusercontent.com/qljsyph/ATAsst/refs/heads/main/ATscripts"
 SCRIPTS_DIR="/etc/mihomo/scripts"
 
-VERSION="1.0.8"
+VERSION="1.0.9"
 
 
-files=("menu.sh" "install.sh" "uninstall.sh" "run.sh" "tools.sh" "catlog.sh" "update_scripts.sh")
+declare -A files=(
+    ["依赖1"]="menu.sh"
+    ["依赖2"]="install.sh"
+    ["依赖3"]="uninstall.sh"
+    ["依赖4"]="run.sh"
+    ["依赖5"]="tools.sh"
+    ["依赖6"]="catlog.sh"
+    ["依赖7"]="update_scripts.sh"
+)
 
 function check_and_download_scripts() {
     echo "检查并下载缺失的脚本文件..."
 
-    for file in "${files[@]}"; do
+    for key in "${!files[@]}"; do
+        file="${files[$key]}"
         if [ ! -f "$SCRIPTS_DIR/$file" ]; then
-            echo "依赖文件不存在，正在下载..."
+            echo "依赖 $key 不存在，正在下载..."
             wget -O "$SCRIPTS_DIR/$file" "$BASE_URL/$file" > /dev/null 2>&1 || { echo "下载 $file 失败！"; exit 1; }
         else
-            echo "文件已存在，无需下载。"
+            echo "依赖 $key 已存在，无需下载。"
         fi
     done
+}
 
     
     echo "设置脚本文件权限为 755 ..."
-    sudo chmod -R 755 "$SCRIPTS_DIR"/* || { echo "设置脚本权限失败！"; exit 1; }
-}
+sudo chmod -R 755 "$SCRIPTS_DIR"/* || { echo "设置脚本权限失败！"; exit 1; }
 
 
 function show_menu() {
     echo "======================================================="
     echo "         欢迎使用虚空终端辅助工具   致谢MetaCubeX     "
-    echo "             版本:1.0.8      工具作者:qljsyph       "
+    echo "             版本:1.0.9      工具作者:qljsyph       "
     echo " Github：https://github.com/qljsyph/ATAsst/tree/main"
     echo "======================================================="
     echo "版本:$VERSION"

@@ -1,5 +1,5 @@
 #!/bin/bash
-#v1.0.8
+#v1.0.9
 
 LOG_FILE="/var/log/AT_install.log"
 
