@@ -5,7 +5,8 @@ SCRIPTS_DIR="/etc/mihomo/scripts"
 
 VERSION="1.10.0"
 
-
+# 清空并定义关联数组
+unset files
 declare -A files=(
     ["依赖1"]="menu.sh"
     ["依赖2"]="install.sh"
