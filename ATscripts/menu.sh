@@ -5,7 +5,7 @@ BASE_URL="https://ghfast.top/https://raw.githubusercontent.com/qljsyph/ATshell/r
 SCRIPTS_DIR="/etc/mihomo/scripts"
 
 # 版本号
-VERSION="1.0.0"
+VERSION="1.0.1"
 
 # 需要的脚本文件列表
 files=("menu.sh" "install.sh" "uninstall.sh" "run.sh" "catlog.sh" "update_scripts.sh")
@@ -35,7 +35,7 @@ function show_menu() {
     echo "             版本：1.0.1      作者：qljsyph       "
     echo " Github：https://github.com/qljsyph/ATshell/tree/main"
     echo "======================================================="
-    echo "版本: $VERSION"
+    echo "版本:$VERSION"
     echo "1. 安装"
     echo "2. 删除"
     echo "3. 运行"
