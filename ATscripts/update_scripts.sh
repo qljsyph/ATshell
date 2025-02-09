@@ -100,11 +100,16 @@ fi
 
 # 删除旧版本脚本
 log_message "删除旧版本脚本..."
-
 for file in "$SCRIPTS_DIR"/*; do
     if [ -f "$file" ]; then
-        log_message "删除 $file ..."
-        sudo rm -f "$file" || { log_message "删除文件 $file 失败！"; exit 1; }
+        log_message "正在删除旧文件: $file ..."
+        sudo rm -f "$file"
+        if [ $? -eq 0 ]; then
+            log_message "成功删除旧文件: $file"
+        else
+            log_message "删除文件 $file 失败！"
+            exit 1
+        fi
     fi
 done
 
@@ -113,11 +118,22 @@ cd "$SCRIPTS_DIR" || { log_message "无法进入脚本目录！"; exit 1; }
 
 # 下载最新的脚本文件
 log_message "下载最新的脚本文件..."
-files=("menu.sh" "install.sh" "uninstall.sh" "run.sh" "catlog.sh" "update_scripts.sh")
+declare -A files=(
+    ["依赖1"]="menu.sh"
+    ["依赖2"]="install.sh"
+    ["依赖3"]="uninstall.sh"
+    ["依赖4"]="run.sh"
+    ["依赖5"]="tools.sh"
+    ["依赖6"]="catlog.sh"
+    ["依赖7"]="update_scripts.sh"
+)
 
-for file in "${files[@]}"; do
+for key in "${!files[@]}"; do
+    file="${files[$key]}"
     log_message "正在下载 $file ..."
-    if ! wget_with_retry "$BASE_URL/$file" "$SCRIPTS_DIR/$file"; then
+    if wget_with_retry "$BASE_URL/$file" "$SCRIPTS_DIR/$file"; then
+        log_message "成功下载 $file"
+    else
         log_message "下载 $file 失败，退出脚本。"
         exit 1
     fi
@@ -130,7 +146,13 @@ sudo chmod -R 755 "$SCRIPTS_DIR"/* || { log_message "设置脚本权限失败！
 # 清除临时目录
 if [ -d "$TEMP_DIR" ]; then
     log_message "清除临时目录 $TEMP_DIR ..."
-    sudo rm -rf "$TEMP_DIR" || { log_message "清除临时目录 $TEMP_DIR 失败！"; exit 1; }
+    sudo rm -rf "$TEMP_DIR"
+    if [ $? -eq 0 ]; then
+        log_message "成功清除临时目录 $TEMP_DIR"
+    else
+        log_message "清除临时目录 $TEMP_DIR 失败！"
+        exit 1
+    fi
 fi
 
 log_message "===== 脚本更新完成 ====="
