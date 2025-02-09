@@ -3,7 +3,7 @@
 BASE_URL="https://ghfast.top/https://raw.githubusercontent.com/qljsyph/ATAsst/refs/heads/main/ATscripts"
 SCRIPTS_DIR="/etc/mihomo/scripts"
 
-VERSION="1.10.0"
+VERSION="1.10.0.1"
 
 # 清空并定义关联数组
 unset files
@@ -39,7 +39,7 @@ sudo chmod -R 755 "$SCRIPTS_DIR"/* || { echo "设置脚本权限失败！"; exit
 function show_menu() {
     echo "======================================================="
     echo "         欢迎使用虚空终端辅助工具   致谢MetaCubeX     "
-    echo "             版本:1.10.0      工具作者:qljsyph       "
+    echo "             版本:1.10.0.1      工具作者:qljsyph       "
     echo " Github：https://github.com/qljsyph/ATAsst/tree/main"
     echo "======================================================="
     echo "版本:$VERSION"
@@ -82,8 +82,7 @@ while true; do
             sudo bash "$SCRIPTS_DIR/catlog.sh"
             ;;
         6)
-            # 直接执行更新脚本 update_scripts.sh
-            echo "执行脚本更新..."
+            echo "更新脚本..."
             sudo bash "$SCRIPTS_DIR/update_scripts.sh"
             ;;
         7)
