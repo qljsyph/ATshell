@@ -2,33 +2,33 @@
 
 function remove_mihomo_bin() {
     if [ -f "/usr/local/bin/mihomo" ]; then
-        echo "正在删除 /usr/local/bin/mihomo..."
+        echo "正在删除核心"
         sudo rm -f /usr/local/bin/mihomo
-        echo "/usr/local/bin/mihomo 已删除"
+        echo "核心已删除"
     else
-        echo "/usr/local/bin/mihomo 不存在，跳过删除"
+        echo "核心不存在，跳过删除"
     fi
 }
 
 function remove_mihomo_service() {
     if [ -f "/etc/systemd/system/mihomo.service" ]; then
-        echo "正在删除 /etc/systemd/system/mihomo.service..."
+        echo "正在删除服务"
         sudo rm -f /etc/systemd/system/mihomo.service
-        echo "/etc/systemd/system/mihomo.service 已删除"
+        echo "服务文件已删除"
         # 重新加载 systemd
         sudo systemctl daemon-reload
     else
-        echo "/etc/systemd/system/mihomo.service 不存在，跳过删除"
+        echo "服务文件不存在，跳过删除"
     fi
 }
 
 function remove_mihomo_config() {
     if [ -d "/etc/mihomo" ]; then
-        echo "正在删除 /etc/mihomo..."
+        echo "正在删除配置文件"
         sudo rm -rf /etc/mihomo
-        echo "/etc/mihomo 已删除"
+        echo "配置已删除"
     else
-        echo "/etc/mihomo 不存在，跳过删除"
+        echo "配置不存在，跳过删除"
     fi
 }
 
