@@ -3,7 +3,7 @@
 # 设置基础路径和脚本存放目录
 BASE_URL="https://ghfast.top/https://raw.githubusercontent.com/qljsyph/ATAsst/refs/heads/main/ATscripts"
 SCRIPTS_DIR="/etc/mihomo/scripts"
-LOG_FILE="/var/log/mihomo_update.log"
+LOG_FILE="/var/log/AT_update.log"
 TEMP_DIR="/tmp/mihomo_update_temp"
 
 # 最大重试次数

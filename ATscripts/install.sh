@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# 检查是否以 root 权限运行
+
 if [ "$EUID" -ne 0 ]; then
     echo "请使用 sudo 运行此脚本。"
     exit 1
@@ -8,7 +8,7 @@ fi
 
 LOG_FILE="/var/log/mihomo_install.log"
 
-# 清空日志文件并确保有写入权限
+
 true > "$LOG_FILE"
 chmod 666 "$LOG_FILE"
 
@@ -18,7 +18,7 @@ function log_message() {
 
 log_message "===== 开始安装 ====="
 
-# 检查是否已安装 mihomo，如果已安装，提示用户是否删除
+
 if [ -f "/usr/local/bin/mihomo" ]; then
     log_message "/usr/local/bin/mihomo 已存在，是否删除？（y/n）"
     read -r choice
@@ -197,7 +197,7 @@ function install_version() {
     unset IFS
 }
 
-# 安装 Alpha 版本
+
 function install_alpha() {
     log_message "开始尝试安装 Alpha 版本"
     if ! install_version "https://api.github.com/repos/MetaCubeX/mihomo/releases?per_page=5" "Alpha"; then
@@ -207,7 +207,7 @@ function install_alpha() {
     log_message "Alpha 版本安装成功"
 }
 
-# 安装稳定版
+
 function install_stable() {
     log_message "开始尝试安装稳定版本"
     if ! install_version "https://api.github.com/repos/MetaCubeX/mihomo/releases/latest" "稳定"; then
@@ -217,11 +217,11 @@ function install_stable() {
     log_message "稳定版本安装成功"
 }
 
-# 安装主菜单
+
 function show_menu() {
     clear
     echo "==============================="
-    echo "       安装脚本菜单           "
+    echo "       安装核心程序           "
     echo "==============================="
     echo "1) 安装 Alpha 版"
     echo "2) 安装发行版"

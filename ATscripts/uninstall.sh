@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# 删除 /usr/local/bin/mihomo
 function remove_mihomo_bin() {
     if [ -f "/usr/local/bin/mihomo" ]; then
         echo "正在删除 /usr/local/bin/mihomo..."
@@ -11,7 +10,6 @@ function remove_mihomo_bin() {
     fi
 }
 
-# 删除 /etc/systemd/system/mihomo.service
 function remove_mihomo_service() {
     if [ -f "/etc/systemd/system/mihomo.service" ]; then
         echo "正在删除 /etc/systemd/system/mihomo.service..."
@@ -24,7 +22,6 @@ function remove_mihomo_service() {
     fi
 }
 
-# 删除 /etc/mihomo
 function remove_mihomo_config() {
     if [ -d "/etc/mihomo" ]; then
         echo "正在删除 /etc/mihomo..."
@@ -35,7 +32,6 @@ function remove_mihomo_config() {
     fi
 }
 
-# 执行卸载操作
 function uninstall() {
     echo "正在卸载 mihomo..."
 
@@ -46,5 +42,4 @@ function uninstall() {
     echo "卸载完成，返回主菜单..."
 }
 
-# 主控制逻辑
 uninstall

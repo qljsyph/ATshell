@@ -1,5 +1,5 @@
 #!/bin/bash
-#v1.10.0.1
+#v1.10.3
 
 LOG_FILE="/var/log/AT_install.log"
 
@@ -114,4 +114,4 @@ sudo chmod +x /usr/local/bin/AT || { log_message "创建快捷方式失败！"; 
 
 log_message "===== 安装完成 ====="
 
-echo "安装完成！现在你可以在终端中输入 'AT' 来执行主脚本。"
+echo "安装完成！现在你可以在终端中输入 'AT' 来运行程序。"
