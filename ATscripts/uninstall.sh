@@ -29,6 +29,36 @@ function remove_mihomo_config() {
         echo "配置已删除"
     else
         echo "配置不存在，跳过删除"
+     fi
+}
+
+function remove_AT_install_log() {
+    if [ -f "/var/log/AT_install.log" ]; then
+        echo "正在删除脚本安装日志"
+        sudo rm -f /var/log/AT_install.log
+        echo "日志已删除"
+    else
+        echo "日志不存在，跳过删除"
+    fi
+}
+
+function remove_AT_update_log() {
+    if [ -f "/var/log/AT_update.log" ]; then
+        echo "正在删除 更新日志"
+        sudo rm -f /var/log/AT_update.log
+        echo "日志已删除"
+    else
+        echo "日志不存在，跳过删除"
+    fi
+}
+
+function remove_mihomo_install_log() {
+    if [ -f "/var/log/mihomo_install.log" ]; then
+        echo "正在删除 安装日志"
+        sudo rm -f /var/log/mihomo_install.log
+        echo "日志已删除"
+    else
+        echo "日志不存在，跳过删除"
     fi
 }
 
@@ -38,6 +68,9 @@ function uninstall() {
     remove_mihomo_bin
     remove_mihomo_service
     remove_mihomo_config
+    remove_AT_install_log
+    remove_AT_update_log
+    remove_mihomo_install_log
 
     echo "卸载完成，返回主菜单..."
 }
