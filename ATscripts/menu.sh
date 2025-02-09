@@ -5,7 +5,7 @@ BASE_URL="https://ghfast.top/https://raw.githubusercontent.com/qljsyph/ATshell/r
 SCRIPTS_DIR="/etc/mihomo/scripts"
 
 # 版本号
-VERSION="1.0.6"
+VERSION="1.0.7"
 
 # 需要的脚本文件列表
 files=("menu.sh" "install.sh" "uninstall.sh" "run.sh" "tools.sh" "catlog.sh" "update_scripts.sh")
@@ -16,10 +16,10 @@ function check_and_download_scripts() {
 
     for file in "${files[@]}"; do
         if [ ! -f "$SCRIPTS_DIR/$file" ]; then
-            echo "$file 文件不存在，正在下载..."
+            echo "依赖文件不存在，正在下载..."
             wget -O "$SCRIPTS_DIR/$file" "$BASE_URL/$file" > /dev/null 2>&1 || { echo "下载 $file 失败！"; exit 1; }
         else
-            echo "$file 文件已存在，无需下载。"
+            echo "文件已存在，无需下载。"
         fi
     done
 
@@ -32,17 +32,17 @@ function check_and_download_scripts() {
 function show_menu() {
     echo "======================================================="
     echo "         欢迎使用虚空终端辅助工具   致谢MetaCubeX     "
-    echo "             版本:1.0.6      工具作者:qljsyph       "
+    echo "             版本:1.0.7      工具作者:qljsyph       "
     echo " Github：https://github.com/qljsyph/ATshell/tree/main"
     echo "======================================================="
     echo "版本:$VERSION"
     echo "1. 安装"
     echo "2. 删除"
     echo "3. 运行"
-    echo "4. 查看安装日志"
-    echo "5. 更新脚本"
-    echo "6. 退出"
-    echo "请选择操作:"
+    echo "4. 常用工具"
+    echo "5. 查看安装日志"
+    echo "6. 更新脚本"
+    echo "7. 退出"
 }
 
 # 主逻辑
@@ -67,7 +67,7 @@ while true; do
             sudo bash "$SCRIPTS_DIR/run.sh"
             ;;
         4) 
-            echo "常用命令..."
+            echo "常用工具..."
             sudo bash "$SCRIPTS_DIR/tools.sh"
             ;;
         5)
