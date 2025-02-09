@@ -138,6 +138,5 @@ log_message "===== 脚本更新完成 ====="
 # 提示用户完成更新
 echo "脚本更新完成！请检查日志文件：$LOG_FILE"
 
-# 返回主菜单
-echo "返回主菜单..."
-"$SCRIPTS_DIR/menu.sh"
+log_message "重新加载最新的 menu.sh..."
+exec "$SCRIPTS_DIR/menu.sh"
