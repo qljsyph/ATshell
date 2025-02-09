@@ -39,17 +39,26 @@ fi
 # 兼容返回单个对象（稳定版）和数组（例如 Alpha 版）的情况
 function get_github_versions() {
     local url=$1
-    log_message "尝试获取 虚空终端 版本信息..."
+    local version_type=$2
+    log_message "尝试获取 $version_type 版本信息..."
     if ! response=$(curl -s "$url"); then
         log_message "获取 GitHub 版本信息时网络请求失败，请检查网络连接。"
         return 1
     fi
-    log_message "成功获取 虚空终端 版本信息"
-    echo "$response" | jq -r 'if type=="array" then
-         .[] | .tag_name as $tag | .assets[] | select(.name | test("^mihomo-linux.*\\.gz$")) | [.name, $tag] | @tsv
-       else
-         .tag_name as $tag | .assets[] | select(.name | test("^mihomo-linux.*\\.gz$")) | [.name, $tag] | @tsv
-       end'
+    log_message "成功获取 $version_type 版本信息"
+    if [ "$version_type" == "Alpha" ]; then
+        echo "$response" | jq -r 'if type=="array" then
+             .[] | .tag_name as $tag | .assets[] | select(.name | test("linux.*alpha.*\\.gz$")) | [.name, $tag] | @tsv
+           else
+             .tag_name as $tag | .assets[] | select(.name | test("linux.*alpha.*\\.gz$")) | [.name, $tag] | @tsv
+           end'
+    else
+        echo "$response" | jq -r 'if type=="array" then
+             .[] | .tag_name as $tag | .assets[] | select(.name | test("^mihomo-linux.*\\.gz$")) | [.name, $tag] | @tsv
+           else
+             .tag_name as $tag | .assets[] | select(.name | test("^mihomo-linux.*\\.gz$")) | [.name, $tag] | @tsv
+           end'
+    fi
 }
 
 # 解压并安装到 /usr/local/bin
@@ -142,7 +151,7 @@ function install_version() {
     local version_type=$2
 
     log_message "正在获取 $version_type 版版本信息..."
-    versions=$(get_github_versions "$url")
+    versions=$(get_github_versions "$url" "$version_type")
 
     if [ -z "$versions" ]; then
         log_message "未找到 $version_type 版的 Linux 系统 .gz 压缩包，返回上层..."

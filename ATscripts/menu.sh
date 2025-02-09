@@ -5,7 +5,7 @@ BASE_URL="https://ghfast.top/https://raw.githubusercontent.com/qljsyph/ATshell/r
 SCRIPTS_DIR="/etc/mihomo/scripts"
 
 # 版本号
-VERSION="1.0.3"
+VERSION="1.0.4"
 
 # 需要的脚本文件列表
 files=("menu.sh" "install.sh" "uninstall.sh" "run.sh" "catlog.sh" "update_scripts.sh")
@@ -32,7 +32,7 @@ function check_and_download_scripts() {
 function show_menu() {
     echo "======================================================="
     echo "         欢迎使用虚空终端辅助工具   致谢MetaCubeX     "
-    echo "             版本:1.0.3      工具作者:qljsyph       "
+    echo "             版本:1.0.4      工具作者:qljsyph       "
     echo " Github：https://github.com/qljsyph/ATshell/tree/main"
     echo "======================================================="
     echo "版本:$VERSION"
