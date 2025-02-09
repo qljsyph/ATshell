@@ -29,14 +29,13 @@ function check_and_download_scripts() {
     done
 }
 
-echo "设置脚本文件权限为 755 ..."
 sudo chmod -R 755 "$SCRIPTS_DIR"/* || { echo "设置脚本权限失败！"; exit 1; }
 
 
 function show_menu() {
     echo "======================================================="
-    echo "         欢迎使用虚空终端辅助工具   致谢MetaCubeX     "
-    echo "             版本:1.10.3      工具作者:qljsyph       "
+    echo "        欢迎使用虚空终端辅助工具   致谢MetaCubeX     "
+    echo "            版本:1.10.3      工具作者:qljsyph       "
     echo " Github：https://github.com/qljsyph/ATAsst/tree/main"
     echo "======================================================="
     echo "版本:$VERSION"
