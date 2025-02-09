@@ -5,10 +5,10 @@ BASE_URL="https://ghfast.top/https://raw.githubusercontent.com/qljsyph/ATshell/r
 SCRIPTS_DIR="/etc/mihomo/scripts"
 
 # 版本号
-VERSION="1.0.5"
+VERSION="1.0.6"
 
 # 需要的脚本文件列表
-files=("menu.sh" "install.sh" "uninstall.sh" "run.sh" "catlog.sh" "update_scripts.sh")
+files=("menu.sh" "install.sh" "uninstall.sh" "run.sh" "tools.sh" "catlog.sh" "update_scripts.sh")
 
 # 检查并下载缺失的脚本文件
 function check_and_download_scripts() {
@@ -32,7 +32,7 @@ function check_and_download_scripts() {
 function show_menu() {
     echo "======================================================="
     echo "         欢迎使用虚空终端辅助工具   致谢MetaCubeX     "
-    echo "             版本:1.0.5      工具作者:qljsyph       "
+    echo "             版本:1.0.6      工具作者:qljsyph       "
     echo " Github：https://github.com/qljsyph/ATshell/tree/main"
     echo "======================================================="
     echo "版本:$VERSION"
@@ -51,7 +51,7 @@ check_and_download_scripts
 
 while true; do
     show_menu
-    read -p "请输入选项: " choice
+    read -r -p "请输入选项: " choice
 
     case $choice in
         1)
@@ -66,16 +66,20 @@ while true; do
             echo "执行运行..."
             sudo bash "$SCRIPTS_DIR/run.sh"
             ;;
-        4)
+        4) 
+            echo "常用命令..."
+            sudo bash "$SCRIPTS_DIR/tools.sh"
+            ;;
+        5)
             echo "查看安装错误日志..."
             sudo bash "$SCRIPTS_DIR/catlog.sh"
             ;;
-        5)
+        6)
             # 直接执行更新脚本 update_scripts.sh
             echo "执行脚本更新..."
             sudo bash "$SCRIPTS_DIR/update_scripts.sh"
             ;;
-        6)
+        7)
             echo "退出程序"
             break
             ;;
