@@ -15,8 +15,11 @@ function check_and_run() {
     echo "正在重新加载 systemd 配置..."
     sudo systemctl daemon-reload
 
-    echo "正在启用 mihomo 服务..."
+    echo "正在启用自启动服务..."
     sudo systemctl enable mihomo
+
+    echo "正在启动mihomo服务"
+    sudo systemctl start mihomo
 
     echo "正在查看 mihomo 服务状态..."
     service_status=$(systemctl status mihomo)
