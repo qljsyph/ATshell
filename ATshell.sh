@@ -2,7 +2,7 @@
 #v1.0.2
 
 # 日志文件
-LOG_FILE="/var/log/mihomo_install.log"
+LOG_FILE="/var/log/AT_install.log"
 
 # 用于输出日志
 function log_message() {
@@ -42,6 +42,21 @@ if ! command -v tar &> /dev/null; then
     fi
 else
     log_message "已安装 tar"
+fi
+
+# 检查并安装解压工具 gzip
+if ! command -v gzip &> /dev/null; then
+    log_message "未检测到 gzip，正在安装..."
+    if [ -x "$(command -v apt-get)" ]; then
+        sudo apt-get install -y gzip || { log_message "安装 gzip 失败！"; exit 1; }
+    elif [ -x "$(command -v yum)" ]; then
+        sudo yum install -y gzip || { log_message "安装 gzip 失败！"; exit 1; }
+    else
+        log_message "无法通过 apt-get 或 yum 安装 gzip，请手动安装！"
+        exit 1
+    fi
+else
+    log_message "已安装 gzip"
 fi
 
 # 检查并安装 wget
@@ -101,7 +116,7 @@ sudo chmod -R 755 "$SCRIPTS_DIR" || { log_message "设置脚本目录权限失�
 
 # 下载主脚本 menu.sh
 log_message "下载主脚本 menu.sh ..."
-wget -O "$SCRIPTS_DIR/menu.sh" "https://ghfast.top/https://raw.githubusercontent.com/qljsyph/ATshell/refs/heads/main/ATscripts/menu.sh" || { log_message "下载 menu.sh 失败！"; exit 1; }
+wget -O "$SCRIPTS_DIR/menu.sh" "https://ghfast.top/https://raw.githubusercontent.com/qljsyph/ATshell/refs/heads/main/ATscripts/menu.sh" > /dev/null 2>&1 || { log_message "下载 menu.sh 失败！"; exit 1; }
 
 # 创建快捷脚本 /usr/local/bin/AT
 log_message "创建快捷脚本 /usr/local/bin/AT ..."
