@@ -32,7 +32,7 @@ function check_and_download_scripts() {
 function show_menu() {
     echo "======================================================="
     echo "        欢迎使用虚空终端辅助工具 请遵守当地法律法规    "
-    echo "             版本：1.0.0      作者：qljsyph       "
+    echo "             版本：1.0.1      作者：qljsyph       "
     echo " Github：https://github.com/qljsyph/ATshell/tree/main"
     echo "======================================================="
     echo "版本: $VERSION"

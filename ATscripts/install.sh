@@ -39,12 +39,12 @@ fi
 # 兼容返回单个对象（稳定版）和数组（例如 Alpha 版）的情况
 function get_github_versions() {
     local url=$1
-    log_message "尝试获取 $url 的版本信息..."
+    log_message "尝试获取 虚空终端 版本信息..."
     if ! response=$(curl -s "$url"); then
         log_message "获取 GitHub 版本信息时网络请求失败，请检查网络连接。"
         return 1
     fi
-    log_message "成功获取 $url 的版本信息"
+    log_message "成功获取 虚空终端 版本信息"
     echo "$response" | jq -r 'if type=="array" then
          .[] | .tag_name as $tag | .assets[] | select(.name | test("^mihomo-linux.*\\.gz$")) | [.name, $tag] | @tsv
        else
