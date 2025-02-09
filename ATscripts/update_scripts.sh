@@ -137,7 +137,7 @@ log_message "===== 脚本更新完成 ====="
 
 # 提示用户完成更新
 echo "脚本更新完成！请检查日志文件：$LOG_FILE"
-# 清屏
-clear
+
+# 重新加载最新的 menu.sh
 log_message "重新加载最新的 menu.sh..."
-source /etc/mihomo/scripts/menu.sh
+exec bash "$SCRIPTS_DIR/menu.sh"
