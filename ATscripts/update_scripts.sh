@@ -160,11 +160,5 @@ log_message "===== 脚本更新完成 ====="
 # 提示用户完成更新
 echo "脚本更新完成！"
 
-log_message "重新加载最新的 menu.sh..."
-if [ -f "$SCRIPTS_DIR/menu.sh" ] && [ -x "$SCRIPTS_DIR/menu.sh" ]; then
-    bash "$SCRIPTS_DIR/menu.sh"
-else
-    log_message "menu.sh 文件不存在或不可执行！"
-    echo "menu.sh 文件不存在或不可执行！"
-    exit 1
-fi
+log_message "重新加载"
+exec bash "$SCRIPTS_DIR/menu.sh"

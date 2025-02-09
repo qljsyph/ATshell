@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 禁用输出缓冲
-stdbuf -o0
+stdbuf -o0 bash
 
 BASE_URL="https://ghfast.top/https://raw.githubusercontent.com/qljsyph/ATAsst/refs/heads/main/ATscripts"
 SCRIPTS_DIR="/etc/mihomo/scripts"
@@ -87,7 +87,7 @@ while true; do
             ;;
         7)
             echo "退出程序"
-            break
+            exit 0
             ;;
         *)
             echo "无效选项，请重新选择！"
