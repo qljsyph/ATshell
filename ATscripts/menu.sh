@@ -1,16 +1,13 @@
 #!/bin/bash
 
-# 设置基础路径和脚本存放目录
-BASE_URL="https://ghfast.top/https://raw.githubusercontent.com/qljsyph/ATshell/refs/heads/main/ATscripts"
+BASE_URL="https://ghfast.top/https://raw.githubusercontent.com/qljsyph/ATAsst/refs/heads/main/ATscripts"
 SCRIPTS_DIR="/etc/mihomo/scripts"
 
-# 版本号
-VERSION="1.0.7"
+VERSION="1.0.8"
 
-# 需要的脚本文件列表
+
 files=("menu.sh" "install.sh" "uninstall.sh" "run.sh" "tools.sh" "catlog.sh" "update_scripts.sh")
 
-# 检查并下载缺失的脚本文件
 function check_and_download_scripts() {
     echo "检查并下载缺失的脚本文件..."
 
@@ -23,17 +20,17 @@ function check_and_download_scripts() {
         fi
     done
 
-    # 设置脚本权限
+    
     echo "设置脚本文件权限为 755 ..."
     sudo chmod -R 755 "$SCRIPTS_DIR"/* || { echo "设置脚本权限失败！"; exit 1; }
 }
 
-# 主菜单显示
+
 function show_menu() {
     echo "======================================================="
     echo "         欢迎使用虚空终端辅助工具   致谢MetaCubeX     "
-    echo "             版本:1.0.7      工具作者:qljsyph       "
-    echo " Github：https://github.com/qljsyph/ATshell/tree/main"
+    echo "             版本:1.0.8      工具作者:qljsyph       "
+    echo " Github：https://github.com/qljsyph/ATAsst/tree/main"
     echo "======================================================="
     echo "版本:$VERSION"
     echo "1. 安装"

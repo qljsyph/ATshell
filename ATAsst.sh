@@ -1,5 +1,5 @@
 #!/bin/bash
-#v1.0.7
+#v1.0.8
 
 LOG_FILE="/var/log/AT_install.log"
 
@@ -105,7 +105,7 @@ log_message "设置脚本目录权限为 755 ..."
 sudo chmod -R 755 "$SCRIPTS_DIR" || { log_message "设置脚本目录权限失败！"; exit 1; }
 
 log_message "下载主脚本 menu.sh ..."
-wget -O "$SCRIPTS_DIR/menu.sh" "https://ghfast.top/https://raw.githubusercontent.com/qljsyph/ATshell/refs/heads/main/ATscripts/menu.sh" > /dev/null 2>&1 || { log_message "下载 menu.sh 失败！"; exit 1; }
+wget -O "$SCRIPTS_DIR/menu.sh" "https://ghfast.top/https://raw.githubusercontent.com/qljsyph/ATAsst/refs/heads/main/ATscripts/menu.sh" > /dev/null 2>&1 || { log_message "下载 menu.sh 失败！"; exit 1; }
 
 log_message "创建快捷方式..."
 echo "#!/bin/bash" | sudo tee /usr/local/bin/AT > /dev/null
