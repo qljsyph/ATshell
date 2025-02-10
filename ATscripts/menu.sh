@@ -40,7 +40,7 @@ function show_menu() {
     echo "======================================================="
     echo "版本:$VERSION"
     echo "1. 安装"
-    echo "2. 删除"
+    echo "2. 卸载"
     echo "3. 运行"
     echo "4. 常用工具"
     echo "5. 查看安装日志"
@@ -62,7 +62,7 @@ while true; do
             sudo bash "$SCRIPTS_DIR/install.sh"
             ;;
         2)
-            echo "执行删除..."
+            echo "执行卸载..."
             sudo bash "$SCRIPTS_DIR/uninstall.sh"
             ;;
         3)
