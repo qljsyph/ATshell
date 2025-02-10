@@ -36,7 +36,7 @@ function show_menu() {
     echo "======================================================="
     echo "        欢迎使用虚空终端辅助工具   致谢MetaCubeX     "
     echo "            版本:1.10.4      工具作者:qljsyph       "
-    echo " Github：https://github.com/qljsyph/ATAsst/tree/main"
+    echo " Github：https://github.com/qljsyph/ATAsst"
     echo "======================================================="
     echo "版本:$VERSION"
     echo "1. 安装"
