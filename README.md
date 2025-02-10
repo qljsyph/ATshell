@@ -22,4 +22,4 @@ bash <(curl -sL https://ghfast.top/https://raw.githubusercontent.com/qljsyph/DPI
 
 ## 展示
 
-![Image text](https://raw.githubusercontent.com/qljsyph/ATAsst/refs/heads/main/p.jpg)
+![Image text](https://raw.githubusercontent.com/qljsyph/ATAsst/refs/heads/main/eg.jpg)
