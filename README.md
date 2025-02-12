@@ -3,7 +3,7 @@
 本项目是一个辅助虚空终端mihomo使用的工具，让使用更加便利。
 ## 支持环境：
 
-目前支持系统为linux
+目前支持系统为linux下debian armbian ubuntu
 
 ## 一键脚本：
 ```
