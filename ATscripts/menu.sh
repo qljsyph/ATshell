@@ -3,7 +3,7 @@
 BASE_URL="https://ghfast.top/https://raw.githubusercontent.com/qljsyph/ATAsst/refs/heads/main/ATscripts"
 SCRIPTS_DIR="/etc/mihomo/scripts"
 
-VERSION="1.10.4"
+VERSION="1.10.5"
 
 # 清空并定义关联数组
 unset files
@@ -35,7 +35,7 @@ sudo chmod -R 755 "$SCRIPTS_DIR"/* || { echo "设置脚本权限失败！"; exit
 function show_menu() {
     echo "======================================================="
     echo "        欢迎使用虚空终端辅助工具   致谢MetaCubeX     "
-    echo "            版本:1.10.4      工具作者:qljsyph       "
+    echo "            版本:1.10.5      工具作者:qljsyph       "
     echo " Github：https://github.com/qljsyph/ATAsst"
     echo "======================================================="
     echo "版本:$VERSION"
