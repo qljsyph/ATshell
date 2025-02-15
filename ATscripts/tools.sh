@@ -7,8 +7,8 @@ show_menu() {
     echo "2. 停止 mihomo 服务"
     echo "3. 查看 mihomo 服务状态"
     echo "4. 查看 mihomo 服务实时日志"
-    echo "6. 启用 mihomo 服务自启动"
-    echo "7. 关闭 mihomo 服务自启动"
+    echo "5. 启用 mihomo 服务自启动"
+    echo "6. 关闭 mihomo 服务自启动"
     echo "7. 返回上层"
 }
 
@@ -40,21 +40,21 @@ view_logs() {
 
 enable_service() {
     echo "正在启用 mihomo 服务自启动..."
-    systemctl enable mihomo
+    systemctl enable mihomo > /dev/null 2>&1
     echo "服务已启用自启动。"
     read -r -p "按回车键返回菜单..."
 }
 
 disable_service() {
     echo "正在关闭 mihomo 服务自启动..."
-    systemctl disable mihomo
+    systemctl disable mihomo > /dev/null 2>&1
     echo "服务已禁用自启动。"
     read -r -p "按回车键返回菜单..."
 }
 
 while true; do
     show_menu
-    read -r -p "请输入选择 (1-6): " choice
+    read -r -p "请输入选择 (1-7): " choice
     case $choice in
         1) start_service ;;
         2) stop_service ;;
