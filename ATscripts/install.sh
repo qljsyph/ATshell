@@ -209,12 +209,12 @@ function install_alpha() {
 
 
 function install_stable() {
-    log_message "开始尝试安装稳定版本"
+    log_message "开始尝试安装发行版"
     if ! install_version "https://api.github.com/repos/MetaCubeX/mihomo/releases/latest" "稳定"; then
-        log_message "安装稳定版本失败"
+        log_message "安装发行版失败"
         return 1
     fi
-    log_message "稳定版本安装成功"
+    log_message "发行版安装成功"
 }
 
 

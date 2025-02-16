@@ -107,7 +107,7 @@ fi
 log_message "设置脚本目录权限为 755 ..."
 sudo chmod -R 755 "$SCRIPTS_DIR" || { log_message "设置脚本目录权限失败！"; exit 1; }
 
-log_message "下载主脚本 menu.sh ..."
+log_message "下载安装..."
 wget -O "$SCRIPTS_DIR/menu.sh" "https://ghfast.top/https://raw.githubusercontent.com/qljsyph/ATAsst/refs/heads/main/ATscripts/menu.sh" > /dev/null 2>&1 || { log_message "下载 menu.sh 失败！"; exit 1; }
 
 log_message "创建快捷方式..."

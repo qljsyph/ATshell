@@ -43,7 +43,7 @@ function check_and_run() {
 
         # 重启网络服务
         sudo chmod +x /etc/mihomo/scripts/restart_network.sh
-        echo "正在执行 restart_network.sh 脚本..."
+        echo "正在重启网络..."
         restart_output=$(sudo /etc/mihomo/scripts/restart_network.sh)
 
         if echo "$restart_output" | grep -q "successfully"; then
