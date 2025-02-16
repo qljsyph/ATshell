@@ -173,7 +173,7 @@ function install_version() {
             trap 'log_message "删除临时目录：$temp_dir"; rm -rf "$temp_dir"' EXIT
 
             log_message "正在下载 $version_type 版本: $file_name"
-            download_url="https://github.com/MetaCubeX/mihomo/releases/download/$tag/$file_name"
+            download_url="https://ghfast.top/https://github.com/MetaCubeX/mihomo/releases/download/$tag/$file_name"
             log_message "下载地址: $download_url"
 
             # 执行 curl 命令并捕获返回值和 HTTP 状态码
