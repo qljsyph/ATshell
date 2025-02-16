@@ -14,7 +14,6 @@ function log_message() {
     echo "$1" | tee -a "$LOG_FILE" > /dev/null
 }
 
-# 带重试机制的 curl 函数
 function curl_with_retry() {
     local url="$1"
     local retries=0
@@ -32,7 +31,6 @@ function curl_with_retry() {
     return 1
 }
 
-# 带重试机制的 wget 函数
 function wget_with_retry() {
     local url="$1"
     local output="$2"
@@ -54,13 +52,13 @@ true > "$LOG_FILE"
 
 log_message "===== 开始更新脚本 ====="
 
-# 检查脚本目录是否存在
+
 if [ ! -d "$SCRIPTS_DIR" ]; then
     log_message "脚本目录不存在，正在创建目录..."
     sudo mkdir -p "$SCRIPTS_DIR" || { log_message "创建目录失败！"; exit 1; }
 fi
 
-# 获取当前本地脚本版本（从 menu.sh 中提取版本号）
+
 if [ -f "$SCRIPTS_DIR/menu.sh" ]; then
     local_current_version=$(grep -oP '(?<=版本:)[0-9.]+' "$SCRIPTS_DIR/menu.sh" | head -n1)
     log_message "当前本地版本：$local_current_version"
@@ -69,7 +67,7 @@ else
     local_current_version="0.0.0"
 fi
 
-# 获取远程版本信息
+
 log_message "获取远程版本信息..."
 remote_version=$(curl_with_retry "$BASE_URL/menu.sh" | grep -oP '(?<=版本:)[0-9.]+' | head -n1)
 
@@ -80,7 +78,7 @@ fi
 
 log_message "远程版本：$remote_version"
 
-# 对比版本号，如果不同则提示更新
+
 if [ "$local_current_version" != "$remote_version" ]; then
     log_message "当前版本：$local_current_version"
     log_message "远程版本：$remote_version"
@@ -97,7 +95,7 @@ else
     exec bash "$SCRIPTS_DIR/menu.sh"
 fi
 
-# 删除旧版本脚本
+
 log_message "删除旧版本脚本..."
 for file in "$SCRIPTS_DIR"/*; do
     if [ -f "$file" ]; then
@@ -112,10 +110,10 @@ for file in "$SCRIPTS_DIR"/*; do
     fi
 done
 
-# 进入脚本目录
+
 cd "$SCRIPTS_DIR" || { log_message "无法进入脚本目录！"; exit 1; }
 
-# 下载最新的脚本文件
+
 log_message "下载最新的脚本文件..."
 declare -A files=(
     ["依赖1"]="menu.sh"
@@ -139,11 +137,11 @@ for key in "${!files[@]}"; do
     fi
 done
 
-# 设置脚本权限
+
 log_message "设置脚本文件权限为 755 ..."
 sudo chmod -R 755 "$SCRIPTS_DIR"/* > /dev/null 2>&1 || { log_message "设置脚本权限失败！"; exit 1; }
 
-# 清除临时目录
+
 if [ -d "$TEMP_DIR" ]; then
     log_message "清除临时目录 $TEMP_DIR ..."
     sudo rm -rf "$TEMP_DIR" > /dev/null 2>&1
@@ -157,7 +155,7 @@ fi
 
 log_message "===== 脚本更新完成 ====="
 
-# 提示用户完成更新
+
 echo "脚本更新完成！"
 
 log_message "重新加载"

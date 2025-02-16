@@ -50,7 +50,6 @@ function show_menu() {
 }
 
 # 主逻辑
-# 在显示菜单之前先检查并下载缺失的子脚本
 check_and_download_scripts
 
 while true; do
