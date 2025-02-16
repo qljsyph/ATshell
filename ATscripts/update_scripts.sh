@@ -125,6 +125,7 @@ declare -A files=(
     ["依赖5"]="tools.sh"
     ["依赖6"]="catlog.sh"
     ["依赖7"]="update_scripts.sh"
+    ["依赖8"]="restart_network.sh"
 )
 
 for key in "${!files[@]}"; do

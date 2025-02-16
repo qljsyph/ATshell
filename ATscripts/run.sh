@@ -42,13 +42,19 @@ function check_and_run() {
         sudo sysctl -p
 
         # 重启网络服务
-        echo "正在重启网络服务..."
-        sudo systemctl restart networking
+        sudo chmod +x /etc/mihomo/scripts/restart_network.sh
+        echo "正在执行 restart_network.sh 脚本..."
+        restart_output=$(sudo /etc/mihomo/scripts/restart_network.sh)
 
-        echo "网络服务已重启，配置已更新。"
-    else
-        echo "未检测到有效的服务状态，请检查日志。"
-        return 1
+        if echo "$restart_output" | grep -q "successfully"; then
+            echo "网络服务已重启，配置已更新。"
+        elif echo "$restart_output" | grep -q "No known network management service found"; then
+            echo "未检测到有效的服务，请检查日志或重启系统。"
+            return 1
+        else
+            echo "未知错误，请检查日志。"
+            return 1
+        fi
     fi
 }
 

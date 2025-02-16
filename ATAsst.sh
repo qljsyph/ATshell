@@ -1,6 +1,9 @@
 #!/bin/bash
-#v1.10.5
-
+#v1.10.6
+if [ "$EUID" -ne 0 ]; then
+    echo "请使用 root 用户运行此脚本。"
+    exit 1
+fi
 LOG_FILE="/var/log/AT_install.log"
 
 function log_message() {
