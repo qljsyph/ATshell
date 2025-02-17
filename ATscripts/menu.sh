@@ -18,7 +18,7 @@ declare -A files=(
 )
 
 function check_and_download_scripts() {
-    echo "检查并下载缺失的脚本文件..."
+    echo "检查工具完整性"
 
     for key in "${!files[@]}"; do
         file="${files[$key]}"
@@ -46,7 +46,7 @@ function show_menu() {
     echo "4. 常用工具"
     echo "5. 配置文件工具"
     echo "6. 查看安装日志"
-    echo "7. 更新脚本"
+    echo "7. 更新ATAsst"
     echo "8. 退出"
 }
 
@@ -82,7 +82,7 @@ while true; do
             sudo bash "$SCRIPTS_DIR/catlog.sh"
             ;;
         7)
-            echo "更新脚本..."
+            echo "更新ATAsst..."
             sudo bash "$SCRIPTS_DIR/update_scripts.sh"
             ;;
         8)

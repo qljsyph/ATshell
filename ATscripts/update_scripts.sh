@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# 设置基础路径和脚本存放目录
 BASE_URL="https://ghfast.top/https://raw.githubusercontent.com/qljsyph/ATAsst/refs/heads/main/ATscripts"
 SCRIPTS_DIR="/etc/mihomo/scripts"
 LOG_FILE="/var/log/AT_update.log"
@@ -50,11 +49,11 @@ function wget_with_retry() {
 # 清空旧的日志文件
 true > "$LOG_FILE"
 
-log_message "===== 开始更新脚本 ====="
+log_message "===== 开始更新工具 ====="
 
 
 if [ ! -d "$SCRIPTS_DIR" ]; then
-    log_message "脚本目录不存在，正在创建目录..."
+    log_message "工具目录不存在，正在创建目录..."
     sudo mkdir -p "$SCRIPTS_DIR" || { log_message "创建目录失败！"; exit 1; }
 fi
 
@@ -72,7 +71,7 @@ log_message "获取远程版本信息..."
 remote_version=$(curl_with_retry "$BASE_URL/menu.sh" | grep -oP '(?<=版本:)[0-9.]+' | head -n1)
 
 if [ -z "$remote_version" ]; then
-    log_message "获取远程版本信息失败，退出脚本。"
+    log_message "获取远程版本信息失败，退出。"
     exit 1
 fi
 
@@ -82,7 +81,7 @@ log_message "远程版本：$remote_version"
 if [ "$local_current_version" != "$remote_version" ]; then
     log_message "当前版本：$local_current_version"
     log_message "远程版本：$remote_version"
-    read -r -p "发现新版本，是否更新脚本？(y/n): " update_choice
+    read -r -p "发现新版本，是否更新？(y/n): " update_choice
 
     if [ "$update_choice" != "y" ]; then
         log_message "用户选择不更新，返回主菜单。"
@@ -96,7 +95,7 @@ else
 fi
 
 
-log_message "删除旧版本脚本..."
+log_message "删除旧版..."
 for file in "$SCRIPTS_DIR"/*; do
     if [ -f "$file" ]; then
         log_message "正在删除旧文件: $file ..."
@@ -110,10 +109,10 @@ for file in "$SCRIPTS_DIR"/*; do
 done
 
 
-cd "$SCRIPTS_DIR" || { log_message "无法进入脚本目录！"; exit 1; }
+cd "$SCRIPTS_DIR" || { log_message "无法进入目录！"; exit 1; }
 
 
-log_message "下载最新的脚本文件..."
+log_message "下载更新文件..."
 declare -A files=(
     ["依赖1"]="menu.sh"
     ["依赖2"]="install.sh"
@@ -132,14 +131,14 @@ for key in "${!files[@]}"; do
     if wget_with_retry "$BASE_URL/$file" "$SCRIPTS_DIR/$file"; then
         log_message "成功下载 $file"
     else
-        log_message "下载 $file 失败，退出脚本。"
+        log_message "下载 $file 失败，退出！"
         exit 1
     fi
 done
 
 
-log_message "设置脚本文件权限为 755 ..."
-sudo chmod -R 755 "$SCRIPTS_DIR"/* > /dev/null 2>&1 || { log_message "设置脚本权限失败！"; exit 1; }
+log_message "设置工具文件权限为 755 ..."
+sudo chmod -R 755 "$SCRIPTS_DIR"/* > /dev/null 2>&1 || { log_message "设置权限失败！"; exit 1; }
 
 
 if [ -d "$TEMP_DIR" ]; then
@@ -153,10 +152,10 @@ if [ -d "$TEMP_DIR" ]; then
     fi
 fi
 
-log_message "===== 脚本更新完成 ====="
+log_message "===== 工具更新完成 ====="
 
 
-echo "脚本更新完成！"
+echo "工具更新完成！"
 
 log_message "重新加载"
 exec bash "$SCRIPTS_DIR/menu.sh"
