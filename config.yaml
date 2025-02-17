@@ -26,7 +26,7 @@ allow-lan: true
 unified-delay: false
 tcp-concurrent: true
 external-controller: 0.0.0.0:9090
-secret: "6886"
+secret: ""
 external-ui: ui
 external-ui-url: "https://ghfast.top/https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages.zip"
 
