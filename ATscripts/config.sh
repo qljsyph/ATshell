@@ -44,8 +44,7 @@ download_default_config() {
     GITHUB_REPO="https://ghfast.top/https://raw.githubusercontent.com/qljsyph/ATAsst/refs/heads/main/config.yaml"  
     TEMP_FILE="/tmp/temp_config.yaml"
 
-    
-    if ! wget --progress=bar:force "$GITHUB_REPO" -O $TEMP_FILE; then
+    if ! wget -q --show-progress "$GITHUB_REPO" -O $TEMP_FILE; then
         printf "${RED}下载失败，请检查网络或仓库地址。详细错误信息如下：${NC}\n"
         wget "$GITHUB_REPO" -O $TEMP_FILE 2>&1 | tail -n 5
         rm -f "$TEMP_FILE"
