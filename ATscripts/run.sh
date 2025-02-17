@@ -58,7 +58,7 @@ function check_and_run() {
     fi
 }
 
-echo "正在执行 run.sh 脚本..."
+echo "正在初始/重启..."
 
 check_config_file
 if [ $? -ne 0 ]; then
