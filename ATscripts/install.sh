@@ -35,8 +35,7 @@ if [ -f "/usr/local/bin/mihomo" ]; then
     fi
 fi
 
-# 获取 GitHub Releases 的版本信息
-# 兼容返回单个对象（稳定版）和数组（例如 Alpha 版）的情况
+
 function get_github_versions() {
     local url=$1
     local version_type=$2
@@ -61,7 +60,7 @@ function get_github_versions() {
     fi
 }
 
-# 解压并安装到 /usr/local/bin
+
 function install_to_bin() {
     local file_name=$1
     local temp_dir=$2
@@ -78,7 +77,7 @@ function install_to_bin() {
     fi
     log_message "文件 $file_name 解压成功"
 
-    # 假设解压后只有一个文件，将其重命名为 mihomo 并移动到 /usr/local/bin
+    
     extracted_file="${file_name%.gz}"
 
     if [ -f "$temp_dir/$extracted_file" ]; then
@@ -120,7 +119,7 @@ EOF
             return 1
         fi
 
-        # 检查文件是否存在
+        
         if [ ! -f "/etc/systemd/system/mihomo.service" ]; then
             log_message "创建 mihomo.service 文件失败，请检查权限。"
             return 1
@@ -145,7 +144,7 @@ EOF
     fi
 }
 
-# 通用安装函数
+
 function install_version() {
     local url=$1
     local version_type=$2
@@ -165,18 +164,18 @@ function install_version() {
             file_name=$(echo "$version" | awk -F $'\t' '{print $1}')
             tag=$(echo "$version" | awk -F $'\t' '{print $2}')
 
-            # 创建临时目录
+            
             temp_dir=$(mktemp -d)
             log_message "临时目录创建成功：$temp_dir"
 
-            # 注册退出时清理临时目录
+            
             trap 'log_message "删除临时目录：$temp_dir"; rm -rf "$temp_dir"' EXIT
 
             log_message "正在下载 $version_type 版本: $file_name"
             download_url="https://ghfast.top/https://github.com/MetaCubeX/mihomo/releases/download/$tag/$file_name"
             log_message "下载地址: $download_url"
 
-            # 执行 curl 命令并捕获返回值和 HTTP 状态码
+           
             http_code=$(curl -L -s -w "%{http_code}" "$download_url" -o "$temp_dir/$file_name")
             if [ "$http_code" == "200" ]; then
                 log_message "$file_name 下载完成"
@@ -210,7 +209,7 @@ function install_alpha() {
 
 function install_stable() {
     log_message "开始尝试安装发行版"
-    if ! install_version "https://api.github.com/repos/MetaCubeX/mihomo/releases/latest" "稳定"; then
+    if ! install_version "https://api.github.com/repos/MetaCubeX/mihomo/releases/latest" "发行"; then
         log_message "安装发行版失败"
         return 1
     fi

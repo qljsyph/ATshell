@@ -100,12 +100,11 @@ log_message "删除旧版本脚本..."
 for file in "$SCRIPTS_DIR"/*; do
     if [ -f "$file" ]; then
         log_message "正在删除旧文件: $file ..."
-        sudo rm -f "$file" > /dev/null 2>&1
-        if [ $? -eq 0 ]; then
-            log_message "成功删除旧文件: $file"
-        else
+        if ! sudo rm -f "$file" > /dev/null 2>&1; then
             log_message "删除文件 $file 失败！"
             exit 1
+        else
+            log_message "成功删除旧文件: $file"
         fi
     fi
 done
@@ -123,7 +122,8 @@ declare -A files=(
     ["依赖5"]="tools.sh"
     ["依赖6"]="catlog.sh"
     ["依赖7"]="update_scripts.sh"
-    ["依赖8"]="restart_network.sh"
+    ["依赖8"]="reset.sh"
+    ["依赖9"]="config.sh"
 )
 
 for key in "${!files[@]}"; do

@@ -3,7 +3,7 @@
 BASE_URL="https://ghfast.top/https://raw.githubusercontent.com/qljsyph/ATAsst/refs/heads/main/ATscripts"
 SCRIPTS_DIR="/etc/mihomo/scripts"
 
-VERSION="1.10.6"
+VERSION="1.11.0"
 
 # 清空并定义关联数组
 unset files
@@ -15,7 +15,8 @@ declare -A files=(
     ["依赖5"]="tools.sh"
     ["依赖6"]="catlog.sh"
     ["依赖7"]="update_scripts.sh"
-    ["依赖8"]="restart_network.sh"
+    ["依赖8"]="reset.sh"
+    ["依赖9"]="config.sh"
 )
 
 function check_and_download_scripts() {
@@ -35,9 +36,11 @@ sudo chmod -R 755 "$SCRIPTS_DIR"/* || { echo "设置脚本权限失败！"; exit
 
 function show_menu() {
     echo "======================================================="
-    echo "        欢迎使用虚空终端辅助工具   致谢MetaCubeX     "
-    echo "            版本:1.10.6      工具作者:qljsyph       "
-    echo " Github：https://github.com/qljsyph/ATAsst"
+    echo "           欢迎使用 ATshell工具   致谢MetaCubeX项目     "
+    echo "               本工具为辅助虚空终端快捷使用     "
+    echo "                  使用者请遵守当地法律法       "
+    echo "            版本:1.11.0      工具作者:qljsyph       "
+    echo "         Github:https://github.com/qljsyph/ATAsst"
     echo "======================================================="
     echo "版本:$VERSION"
     echo "1. 安装"

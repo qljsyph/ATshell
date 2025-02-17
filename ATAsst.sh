@@ -1,5 +1,5 @@
 #!/bin/bash
-#v1.10.6
+#v1.11.0
 if [ "$EUID" -ne 0 ]; then
     echo "请使用 root 用户运行此脚本。"
     exit 1
