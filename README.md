@@ -1,9 +1,10 @@
 # ATAsst
-致谢MetaCubeX https://github.com/MetaCubeX
-本项目是一个辅助虚空终端mihomo使用的工具，让使用更加便利。![badge] 请使用者遵守当地法律法规。
+> [!NOTE]
+> 致谢MetaCubeX https://github.com/MetaCubeX
+> 本项目是一个辅助虚空终端mihomo使用的工具，让使用更加便利。![badge] 请使用者遵守当地法律法规。
 ## 支持环境：
 
-![badge] 目前支持系统为linux下debian armbian ubuntu
+目前支持系统为linux下debian armbian ubuntu
 
 ## 一键脚本：
 ```
