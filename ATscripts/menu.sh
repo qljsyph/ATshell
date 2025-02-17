@@ -36,7 +36,7 @@ sudo chmod -R 755 "$SCRIPTS_DIR"/* || { echo "设置脚本权限失败！"; exit
 
 function show_menu() {
     echo "======================================================="
-    echo "           欢迎使用 ATshell工具   致谢MetaCubeX项目     "
+    echo "           欢迎使用 ATAsst工具   致谢MetaCubeX项目     "
     echo "               本工具为辅助虚空终端快捷使用     "
     echo "                  使用者请遵守当地法律法       "
     echo "            版本:1.11.0      工具作者:qljsyph       "
