@@ -42,7 +42,6 @@ function show_menu() {
     echo "            版本:1.11.0      工具作者:qljsyph       "
     echo "         Github:https://github.com/qljsyph/ATAsst"
     echo "======================================================="
-    echo "版本:$VERSION"
     echo "1. 安装"
     echo "2. 卸载"
     echo "3. 运行"
