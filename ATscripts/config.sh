@@ -141,7 +141,7 @@ while true; do
     printf "3. 修改基础订阅地址\n"
     printf "4. 删除配置及备份\n"
     printf "5. 还原备份\n"
-    printf "6. 退出\n"
+    printf "6. 返回主菜单\n"
     printf "输入选项 (1-6): "
     read -r option
     case $option in
@@ -161,7 +161,7 @@ while true; do
             restore_backup
             ;;
         6)
-            printf "退出脚本。\n"
+            printf "返回主菜单。\n"
             break
             ;;
         *)

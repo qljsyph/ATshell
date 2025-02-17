@@ -3,8 +3,6 @@
 BASE_URL="https://ghfast.top/https://raw.githubusercontent.com/qljsyph/ATAsst/refs/heads/main/ATscripts"
 SCRIPTS_DIR="/etc/mihomo/scripts"
 
-VERSION="1.11.0"
-
 # 清空并定义关联数组
 unset files
 declare -A files=(
@@ -46,9 +44,10 @@ function show_menu() {
     echo "2. 卸载"
     echo "3. 运行"
     echo "4. 常用工具"
-    echo "5. 查看安装日志"
-    echo "6. 更新脚本"
-    echo "7. 退出"
+    echo "5. 配置文件工具"
+    echo "6. 查看安装日志"
+    echo "7. 更新脚本"
+    echo "8. 退出"
 }
 
 # 主逻辑
@@ -73,17 +72,20 @@ while true; do
             ;;
         4) 
             echo "常用工具..."
-            sudo bash "$SCRIPTS_DIR/tools.sh"
+            sudo bash "$SCRIPTS_DIR/tools.sh"    
             ;;
-        5)
+        5)  echo "配置文件工具"
+            sudo bash "$SCRIPTS_DIR/config.sh"
+            ;;  
+        6)
             echo "查看安装错误日志..."
             sudo bash "$SCRIPTS_DIR/catlog.sh"
             ;;
-        6)
+        7)
             echo "更新脚本..."
             sudo bash "$SCRIPTS_DIR/update_scripts.sh"
             ;;
-        7)
+        8)
             echo "退出程序"
             exit 0
             ;;
