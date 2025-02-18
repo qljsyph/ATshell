@@ -45,7 +45,7 @@ download_default_config() {
     TEMP_FILE="/tmp/temp_config.yaml"
 
     if ! wget -q --show-progress "$GITHUB_REPO" -O $TEMP_FILE; then
-        printf "${RED}下载失败，请检查网络或仓库地址。详细错误信息如下：${NC}\n"
+        printf "${RED}下载失败，请检查网络。${NC}\n"
         wget "$GITHUB_REPO" -O $TEMP_FILE 2>&1 | tail -n 5
         rm -f "$TEMP_FILE"
         return 1
@@ -77,6 +77,13 @@ manual_upload() {
         rm -f "$TEMP_FILE"
         return 1
     fi
+
+    FILENAME=$(basename "$raw_url")
+    if [ "$FILENAME" != "config.yaml" ]; then
+        mv $TEMP_FILE /tmp/config.yaml
+        TEMP_FILE="/tmp/config.yaml"
+    fi
+
     if [ -f "$CONFIG_FILE" ]; then
         printf "${RED}配置文件已存在，是否覆盖？(y/n):${NC} "
         read -r answer
