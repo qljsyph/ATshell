@@ -47,15 +47,15 @@ function get_github_versions() {
     log_message "成功获取 $version_type 版本信息"
     if [ "$version_type" == "Alpha" ]; then
         echo "$response" | jq -r 'if type=="array" then
-             .[] | .tag_name as $tag | .assets[] | select(.name | test("linux.*alpha.*\\.gz$")) | [.name, $tag] | @tsv
+             .[] | .tag_name as $tag | .assets[] | select(.name | test("(linux|darwin).*alpha.*\\.gz$")) | [.name, $tag] | @tsv
            else
-             .tag_name as $tag | .assets[] | select(.name | test("linux.*alpha.*\\.gz$")) | [.name, $tag] | @tsv
+             .tag_name as $tag | .assets[] | select(.name | test("(linux|darwin).*alpha.*\\.gz$")) | [.name, $tag] | @tsv
            end'
     else
         echo "$response" | jq -r 'if type=="array" then
-             .[] | .tag_name as $tag | .assets[] | select(.name | test("^mihomo-linux.*\\.gz$")) | [.name, $tag] | @tsv
+             .[] | .tag_name as $tag | .assets[] | select(.name | test("^(mihomo-(linux|darwin)).*\\.gz$")) | [.name, $tag] | @tsv
            else
-             .tag_name as $tag | .assets[] | select(.name | test("^mihomo-linux.*\\.gz$")) | [.name, $tag] | @tsv
+             .tag_name as $tag | .assets[] | select(.name | test("^(mihomo-(linux|darwin)).*\\.gz$")) | [.name, $tag] | @tsv
            end'
     fi
 }
